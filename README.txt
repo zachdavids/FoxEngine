@@ -1,0 +1,2 @@
+Use CMAKE as usual, required libraries can be found in the libraries folder. Before running, move the "res" folder and "assimp-vc140-mt.dll" in to the folder 
+that binaries were built by CMAKE. Complile and then should be good to go after that.
