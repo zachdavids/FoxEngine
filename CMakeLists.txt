@@ -10,7 +10,7 @@ file(GLOB SOURCES
 )
 
 # Add executable based on the source files
-add_executable(FoxEngine ${HDRS} ${SRCS})
+add_executable(FoxEngine ${SOURCES})
 
 # Require OpenGL library
 find_package(OpenGL REQUIRED)
