@@ -9,10 +9,6 @@ WindowManager::WindowManager()
 	CreateWindow();
 }
 
-WindowManager::~WindowManager()
-{
-}
-
 GLFWwindow * WindowManager::GetWindow()
 {
 	return window_;

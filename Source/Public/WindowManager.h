@@ -12,7 +12,6 @@ class WindowManager
 {
 public:
 	WindowManager();
-	~WindowManager();
 	GLFWwindow *GetWindow();
 private:
 	int width_;
