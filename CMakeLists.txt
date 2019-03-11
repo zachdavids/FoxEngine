@@ -19,7 +19,8 @@ target_link_libraries(FoxEngine ${OPENGL_gl_LIBRARY})
 
 # Other libraries needed
 set(LIBRARY_PATH "" CACHE PATH "Folder with GLEW, GLFW, GLM, ASSIMP, and SOIL libraries")
-include_directories(${LIBRARY_PATH}/include)
+include_directories(${LIBRARY_PATH}/include
+		    Source/Public)
 if(NOT WIN32)
     find_library(GLEW_LIBRARY GLEW)
     find_library(GLFW_LIBRARY glfw)
