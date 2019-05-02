@@ -28,9 +28,7 @@ public:
 	void Translate(glm::vec3 translation);
 	void Rotate(float roll, float pitch, float yaw);
 	void Scale(glm::vec3 scale);
-	virtual void Update(double delta_time) {};
-	void AddEntity(Entity* entity);
-	std::vector<Entity*> GetSubEntities();
+	virtual void Update(double delta_time);
 private:
 	float hp_;
 	float roll_;
@@ -45,5 +43,4 @@ private:
 	void CalculateForward(glm::vec3 difference);
 	void CalculateSide(glm::vec3 difference);
 	void CalculateUp();
-	std::vector<Entity*> sub_entities_;
 };

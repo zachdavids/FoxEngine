@@ -1,6 +1,6 @@
 #include "WaterRenderer.h"
 
-const float WaterRenderer::WAVE_SPEED = 0.001;
+const float WaterRenderer::WAVE_SPEED = 0.00001;
 
 WaterRenderer::WaterRenderer(WaterShader* shader, Framebuffer* buffer, glm::mat4 projection) : shader_(shader), buffer_(buffer), projection_(projection)
 {

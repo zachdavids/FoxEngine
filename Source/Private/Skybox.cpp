@@ -1,7 +1,7 @@
 #include "Skybox.h"
 
 const float Skybox::SIZE = 500.0f;
-const float Skybox::ROTATE_SPEED = 0.05f;
+const float Skybox::ROTATE_SPEED = 0.005f;
 
 Skybox::Skybox()
 {
@@ -11,7 +11,6 @@ Skybox::Skybox()
 
 Model* Skybox::CreateSkybox()
 {
-
 	float vertices_array[] = {
 		-SIZE,-SIZE,-SIZE, // triangle 1 : begin
 		-SIZE,-SIZE, SIZE,

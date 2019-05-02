@@ -16,12 +16,7 @@ Model::Model(std::string path)
 	LoadModel(path);
 }
 
-std::vector<Mesh> Model::GetMeshes()
-{
-	return meshes_;
-}
-
-std::vector<Mesh> Model::GetMeshes() const
+std::vector<Mesh>& Model::GetMeshes()
 {
 	return meshes_;
 }

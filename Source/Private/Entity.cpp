@@ -89,14 +89,9 @@ void Entity::Scale(glm::vec3 scale)
 	scale_ = scale;
 }
 
-void Entity::AddEntity(Entity * entity)
+void Entity::Update(double delta_time)
 {
-	sub_entities_.push_back(entity);
-}
 
-std::vector<Entity*> Entity::GetSubEntities()
-{
-	return sub_entities_;
 }
 
 void Entity::CalculateForward(glm::vec3 difference)

@@ -20,8 +20,7 @@ class Model
 public:
 	Model(Mesh* mesh);
 	Model(std::string path);
-	std::vector<Mesh> GetMeshes();
-	std::vector<Mesh> GetMeshes() const;
+	std::vector<Mesh>& GetMeshes();
 	void LoadModel(std::string path);
 	void ProcessNode(aiNode *node, const aiScene *scene);
 	Mesh ProcessMesh(aiMesh *mesh, const aiScene *scene);

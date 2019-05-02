@@ -124,8 +124,6 @@ Model* Terrain::GenerateTerrain(std::string path)
 		}
 	}
 
-	std::cout << height << std::endl;
-
 	stbi_image_free(image_data);
 	std::vector<Texture> test;
 

@@ -55,7 +55,6 @@ void Shader::SetMat4(std::string name, glm::mat4 value)
 	glUniformMatrix4fv(glGetUniformLocation(program_id_, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 }
 
-// Compiles a 'type' shader based on 'path' and returns its ID
 GLuint Shader::LoadShader(std::string path, GLuint type)
 {
 	// Read shader text file
@@ -80,7 +79,9 @@ GLuint Shader::LoadShader(std::string path, GLuint type)
 		glGetProgramInfoLog(shader_id, maxLength, &maxLength, &infoLog[0]);
 
 		for (int i = 0; i < infoLog.size(); i++)
+		{
 			std::cout << infoLog[i];
+		}
 		glDeleteProgram(shader_id);
 	}
 	return shader_id;

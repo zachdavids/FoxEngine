@@ -30,7 +30,6 @@ void MasterRenderer::Render(std::vector<Light*> lights, Camera * camera, glm::ve
 	skybox_shader_->LoadFogColor(glm::vec3(RED, GREEN, BLUE));
 	skybox_shader_->LoadViewMatrix(skybox_, glm::mat4(glm::mat3(camera->GenerateViewMatrix())));
 	skybox_renderer_->Render(skybox_);
-	skybox_shader_->Stop();
 	
 	//Entities
 	static_shader_->Start();
@@ -39,18 +38,14 @@ void MasterRenderer::Render(std::vector<Light*> lights, Camera * camera, glm::ve
 	static_shader_->LoadLight(lights);
 	static_shader_->LoadViewMatrix(camera->GenerateViewMatrix());
 	entity_renderer_->Render(entities_);
-	static_shader_->Stop();
 
+	//Terrain
 	terrain_shader_->Start();
 	terrain_shader_->LoadPlane(plane);
 	terrain_shader_->LoadSkyColour(glm::vec3(RED, GREEN, BLUE));
 	terrain_shader_->LoadLight(lights);
 	terrain_shader_->LoadViewMatrix(camera->GenerateViewMatrix());
 	terrain_renderer_->Render(terrain_);
-	terrain_shader_->Stop();
-
-	entities_.clear();
-	terrain_.clear();
 }
 
 void MasterRenderer::RenderWater(Camera* camera)
@@ -59,8 +54,6 @@ void MasterRenderer::RenderWater(Camera* camera)
 	water_shader_->Start();
 	water_shader_->LoadViewMatrix(camera->GenerateViewMatrix());
 	water_renderer_->Render(water_);
-	water_shader_->Stop();
-	water_.clear();
 }
 
 void MasterRenderer::ProcessEntity(Entity* entity)
