@@ -61,7 +61,7 @@ void Game::Init()
 {
 	InitEventHandlers();
 
-	Model* arwing = new Model("Res/Models/Arwing/Arwing.obj");
+	Model* arwing = new Model("Resources/Models/Arwing/Arwing.obj");
 	player_ = new Player(arwing, glm::vec3(200.0f, 20.0f, 200.0f), 0, 0, 0, glm::vec3(0.5f, 0.5f, 0.5f));
 	entities_.push_back(player_);
 	for (Entity* entity : entities_)

@@ -1,6 +1,6 @@
 #include "SkyboxShader.h"
 
-SkyboxShader::SkyboxShader() : Shader("res/Shaders/Skybox.vert", "res/Shaders/Skybox.frag")
+SkyboxShader::SkyboxShader() : Shader("Resources/Shaders/Skybox.vert", "Resources/Shaders/Skybox.frag")
 {
 }
 

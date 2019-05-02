@@ -1,6 +1,6 @@
 #include "WaterShader.h"
 
-WaterShader::WaterShader() : Shader("res/Shaders/Water.vert", "res/Shaders/Water.frag")
+WaterShader::WaterShader() : Shader("Resources/Shaders/Water.vert", "Resources/Shaders/Water.frag")
 {
 }
 

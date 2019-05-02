@@ -29,7 +29,7 @@ Model* Water::CreateWater()
 		 vertices.push_back(vertex);
 	 }
 	 std::vector<Texture> textures;
-	 Texture dudv = Tools::LoadTexture("Res/Textures/dudv.png");
+	 Texture dudv = Tools::LoadTexture("Resources/Textures/dudv.png");
 	 textures.push_back(dudv);
 
 	 return new Model(new Mesh(vertices, textures));

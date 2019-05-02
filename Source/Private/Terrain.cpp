@@ -7,7 +7,7 @@ const float Terrain::MAX_PIXEL_COLOUR = 256;
 Terrain::Terrain(int grid_x, int grid_z) : x_(grid_x * SIZE), z_(grid_z * SIZE)
 {
 
-	model_ = GenerateTerrain("Res/Textures/heightmap.png");
+	model_ = GenerateTerrain("Resources/Textures/heightmap.png");
 }
 
 float Terrain::GetX()
@@ -127,15 +127,15 @@ Model* Terrain::GenerateTerrain(std::string path)
 	stbi_image_free(image_data);
 	std::vector<Texture> test;
 
-	Texture background = Tools::LoadTexture("Res/Textures/grass.png");
+	Texture background = Tools::LoadTexture("Resources/Textures/grass.png");
 	test.push_back(background);
-	Texture r = Tools::LoadTexture("Res/Textures/dirt.png");
+	Texture r = Tools::LoadTexture("Resources/Textures/dirt.png");
 	test.push_back(r);
-	Texture g = Tools::LoadTexture("Res/Textures/flowers.png");
+	Texture g = Tools::LoadTexture("Resources/Textures/flowers.png");
 	test.push_back(g);
-	Texture b = Tools::LoadTexture("Res/Textures/path.png");
+	Texture b = Tools::LoadTexture("Resources/Textures/path.png");
 	test.push_back(b);
-	Texture blend_map = Tools::LoadTexture("Res/Textures/blend.png");
+	Texture blend_map = Tools::LoadTexture("Resources/Textures/blend.png");
 	test.push_back(blend_map);
 	return new Model(new Mesh(vertices, indices, test));
 }

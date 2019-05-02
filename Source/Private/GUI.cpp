@@ -32,7 +32,7 @@ Model* GUI::CreateGUI()
 		vertices.push_back(vertex);
 	}
 	
-	texture_ = Tools::LoadTexture("Res/Textures/grass.png");
+	texture_ = Tools::LoadTexture("Resources/Textures/grass.png");
 	return new Model(new Mesh(vertices));
 }
 

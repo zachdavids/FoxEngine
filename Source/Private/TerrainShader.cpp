@@ -2,7 +2,7 @@
 
 const int TerrainShader::MAX_LIGHTS = 4;
 
-TerrainShader::TerrainShader() : Shader("res/Shaders/Terrain.vert", "res/Shaders/Terrain.frag")
+TerrainShader::TerrainShader() : Shader("Resources/Shaders/Terrain.vert", "Resources/Shaders/Terrain.frag")
 {
 }
 

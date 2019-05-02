@@ -1,6 +1,6 @@
 #include "GUIShader.h"
 
-GUIShader::GUIShader() : Shader("res/Shaders/GUI.vert", "res/Shaders/GUI.frag")
+GUIShader::GUIShader() : Shader("Resources/Shaders/GUI.vert", "Resources/Shaders/GUI.frag")
 {
 }
 

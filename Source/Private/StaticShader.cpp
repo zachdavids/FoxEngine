@@ -2,7 +2,7 @@
 
 const int StaticShader::MAX_LIGHTS = 4;
 
-StaticShader::StaticShader() : Shader("res/Shaders/Shader.vert", "res/Shaders/Shader.frag")
+StaticShader::StaticShader() : Shader("Resources/Shaders/Shader.vert", "Resources/Shaders/Shader.frag")
 {
 }
 

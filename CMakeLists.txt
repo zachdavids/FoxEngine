@@ -18,7 +18,7 @@ include_directories(${OPENGL_INCLUDE_DIR})
 target_link_libraries(FoxEngine ${OPENGL_gl_LIBRARY})
 
 # Other libraries needed
-set(LIBRARY_PATH "" CACHE PATH "Folder with GLEW, GLFW, GLM, ASSIMP, and SOIL libraries")
+set(LIBRARY_PATH "${CMAKE_SOURCE_DIR}/Libraries/" CACHE PATH "Folder with GLEW, GLFW, GLM, ASSIMP, and SOIL libraries")
 include_directories(${LIBRARY_PATH}/include
 		    Source/Public)
 if(NOT WIN32)
