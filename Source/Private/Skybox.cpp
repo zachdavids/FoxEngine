@@ -1,4 +1,5 @@
 #include "Skybox.h"
+#include "Tools.h"
 
 const float Skybox::SIZE = 500.0f;
 const float Skybox::ROTATE_SPEED = 0.005f;
@@ -60,12 +61,12 @@ Model* Skybox::CreateSkybox()
 		vector.x = -vertices_array[i];
 		vector.y = -vertices_array[i + 1];
 		vector.z = -vertices_array[i + 2];
-		vertex.position_ = vector;
+		vertex.position = vector;
 		vector = glm::vec3(1.0f);
-		vertex.texture_uv_ = uv;
-		vertex.normal_ = vector;
-		vertex.tangent_ = vector;
-		vertex.bitangent_ = vector;
+		vertex.uv = uv;
+		vertex.normal = vector;
+		vertex.tangent = vector;
+		vertex.bitangent = vector;
 		vertices.push_back(vertex);
 	}
 

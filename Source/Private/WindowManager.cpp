@@ -1,41 +1,43 @@
 #include "WindowManager.h"
 #include "Config.h"
 
-WindowManager::WindowManager()
-{
-	width_ = WINDOW_WIDTH;;
-	height_ = WINDOW_HEIGHT;
-	title_ = "Starfox";
-	CreateWindow();
-}
+#define GLEW_STATIC
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
-GLFWwindow * WindowManager::GetWindow()
+WindowManager::WindowManager() :
+	m_Width(WINDOW_WIDTH),
+	m_Height(WINDOW_HEIGHT)
 {
-	return window_;
+	CreateWindow();
 }
 
 void WindowManager::CreateWindow()
 {
-	// Initialize the window management library (GLFW)
-	if (!glfwInit()) {
+	if (!glfwInit()) 
+	{
 	}
 
-	// Create a window and its OpenGL context
-	window_ = glfwCreateWindow(width_, height_, title_.c_str(), NULL, NULL);
-	if (!window_) {
+	m_Window = glfwCreateWindow(m_Width, m_Height, "Starfox", NULL, NULL);
+	if (!m_Window) 
+	{
 		glfwTerminate();
 	}
 
-	glfwMakeContextCurrent(window_);
-	glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-	// Make the window's context the current one
-	glfwMakeContextCurrent(window_);
+	glfwMakeContextCurrent(m_Window);
+	glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwMakeContextCurrent(m_Window);
 
 	glewExperimental = GL_TRUE;
-	if (glewInit() != GLEW_OK) {
+	if (glewInit() != GLEW_OK) 
+	{
 		fprintf(stderr, "Failed to initialize GLEW\n");
 		getchar();
 		glfwTerminate();
 	}
+}
+
+GLFWwindow* WindowManager::GetWindow() const
+{
+	return m_Window;
 }

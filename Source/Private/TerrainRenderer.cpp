@@ -1,4 +1,5 @@
 #include "TerrainRenderer.h"
+#include "Tools.h"
 
 TerrainRenderer::TerrainRenderer(TerrainShader* shader, glm::mat4 projection) : shader_(shader), projection_(projection)
 {
@@ -29,7 +30,7 @@ void TerrainRenderer::InitializeModel(Mesh* mesh)
 	for (unsigned int i = 0; i < mesh->GetTextures().size(); i++)
 	{
 		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_2D, mesh->GetTextures()[i].id_);
+		glBindTexture(GL_TEXTURE_2D, mesh->GetTextures()[i].id);
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

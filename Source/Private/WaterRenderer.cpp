@@ -1,24 +1,32 @@
 #include "WaterRenderer.h"
+#include "Mesh.h"
+#include "Model.h"
+#include "Water.h"
+#include "WaterShader.h"
+#include "Framebuffer.h"
+#include "Tools.h"
 
-const float WaterRenderer::WAVE_SPEED = 0.00001;
+const float WaterRenderer::s_WaveSpeed = 0.00001;
 
-WaterRenderer::WaterRenderer(WaterShader* shader, Framebuffer* buffer, glm::mat4 projection) : shader_(shader), buffer_(buffer), projection_(projection)
+WaterRenderer::WaterRenderer(WaterShader* shader, Framebuffer* buffer, glm::mat4 const& projection) : 
+	m_Shader(shader), 
+	m_Framebuffer(buffer), 
+	m_Projection(projection)
 {
-	move_factor_ = 0.0f;
-	shader_->Start();
-	shader_->LoadTextures();
-	shader_->LoadProjectionMatrix(projection_);
-	shader_->Stop();
+	m_Shader->Start();
+	m_Shader->LoadTextures();
+	m_Shader->LoadProjectionMatrix(m_Projection);
+	m_Shader->Stop();
 }
 
-void WaterRenderer::Render(std::vector<Water*> water)
+void WaterRenderer::Render(std::vector<Water*> const& water)
 {
 	for (Water* water_tile : water)
 	{
 		Model* model = water_tile->GetModel();
-		move_factor_ += WAVE_SPEED;
-		move_factor_ = fmod(move_factor_, 1.0f);
-		shader_->LoadMoveFactor(move_factor_);
+		m_MoveFactor += s_WaveSpeed;
+		m_MoveFactor = fmod(m_MoveFactor, 1.0f);
+		m_Shader->LoadMoveFactor(m_MoveFactor);
 		InitializeModel(&model->GetMeshes()[0]);
 		LoadModelMatrix(water_tile);
 		glDrawArrays(GL_TRIANGLES, 0, model->GetMeshes()[0].GetVerticesCount());
@@ -26,24 +34,31 @@ void WaterRenderer::Render(std::vector<Water*> water)
 	}
 }
 
-void WaterRenderer::InitializeModel(Mesh* mesh)
+void WaterRenderer::InitializeModel(Mesh* mesh) const
 {
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, buffer_->GetReflectionTexture());
+	glBindTexture(GL_TEXTURE_2D, m_Framebuffer->GetReflectionTexture());
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, buffer_->GetRefractionTexture());
+	glBindTexture(GL_TEXTURE_2D, m_Framebuffer->GetRefractionTexture());
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, mesh->GetTextures()[0].id_);
+	glBindTexture(GL_TEXTURE_2D, mesh->GetTextures()[0].id);
 	glBindVertexArray(mesh->GetVAO());
 }
 
-void WaterRenderer::UnbindModel()
+void WaterRenderer::UnbindModel() const
 {
 	glBindVertexArray(0);
 }
 
-void WaterRenderer::LoadModelMatrix(Water* water)
+void WaterRenderer::LoadModelMatrix(Water* water) const
 {
-	shader_->LoadTransformationMatrix(Tools::GenerateTransformMatrix(glm::vec3(water->GetX(), water->GetHeight(), water->GetZ()),
-		glm::vec3(0), glm::vec3(Water::TILE_SIZE, Water::TILE_SIZE, Water::TILE_SIZE)));
+	const glm::mat4 transform = Tools::GenerateTransformMatrix(
+			glm::vec3(water->GetX(), 
+			water->GetHeight(), 
+			water->GetZ()),
+			glm::vec3(0), 
+			glm::vec3(Water::s_TileSize, Water::s_TileSize, Water::s_TileSize)
+	);
+
+	m_Shader->LoadTransformationMatrix(transform);
 }

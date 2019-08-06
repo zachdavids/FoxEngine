@@ -1,23 +1,29 @@
 #pragma once
 
-#include "Water.h"
-#include "WaterShader.h"
-#include "Model.h"
-#include "Framebuffer.h"
+#include <GLM/mat4x4.hpp>
+
+#include <vector>
+
+class Mesh;
+class Water;
+class WaterShader;
+class Framebuffer;
 
 class WaterRenderer
 {
 public:
-	WaterRenderer(WaterShader* shader, Framebuffer* buffer, glm::mat4 projection);
-	void InitializeModel(Mesh * mesh);
-	void UnbindModel();
-	void Render(std::vector<Water*> water);
-	void LoadModelMatrix(Water * water);
-	const static float WAVE_SPEED;
+
+	WaterRenderer(WaterShader* shader, Framebuffer* buffer, glm::mat4 const& projection);
+	void InitializeModel(Mesh* mesh) const;
+	void UnbindModel() const;
+	void Render(std::vector<Water*> const& water);
+	void LoadModelMatrix(Water* water) const;
+
 private:
-	bool initialized_;
-	float move_factor_;
-	WaterShader* shader_;
-	Framebuffer* buffer_;
-	glm::mat4 projection_;
+
+	float m_MoveFactor = 0.0f;
+	const static float s_WaveSpeed;
+	WaterShader* m_Shader = nullptr;
+	Framebuffer* m_Framebuffer = nullptr;
+	glm::mat4 m_Projection;
 };

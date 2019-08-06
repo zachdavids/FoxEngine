@@ -22,13 +22,12 @@ public:
 	void Start();
 	void Stop();
 	void BindAttribute(int index, std::string name);
-	void SetBool(std::string name, bool value);
-	void SetInt(std::string name, int value);
-	void SetFloat(std::string name, float value);
-	void SetVector(std::string name, glm::vec3 value);
-	void SetVec4(std::string name, glm::vec4 value);
-	void SetFloatVector(std::string name, std::vector<glm::vec3> vector);
-	void SetMat4(std::string name, glm::mat4 value);
+	void SetBool(std::string name, bool value) const;
+	void SetInt(std::string name, int value) const;
+	void SetFloat(std::string name, float value) const;
+	void SetVector(std::string name, glm::vec3 value) const;
+	void SetVec4(std::string name, glm::vec4 value) const;
+	void SetMat4(std::string name, glm::mat4 value) const;
 
 private:
 	int program_id_;

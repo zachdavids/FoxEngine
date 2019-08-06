@@ -1,4 +1,5 @@
 #include "Model.h"
+#include "Tools.h"
 
 Model::Model(Mesh* mesh)
 {
@@ -78,12 +79,12 @@ Mesh Model::ProcessMesh(aiMesh * mesh, const aiScene * scene)
 			min.y = vector.y;
 		if (vector.z < min.z)
 			min.z = vector.z;
-		vertex.position_ = vector;
+		vertex.position = vector;
 		// normals
 		vector.x = mesh->mNormals[i].x;
 		vector.y = mesh->mNormals[i].y;
 		vector.z = mesh->mNormals[i].z;
-		vertex.normal_ = vector;
+		vertex.normal = vector;
 		// texture coordinates
 		if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
 		{
@@ -92,20 +93,20 @@ Mesh Model::ProcessMesh(aiMesh * mesh, const aiScene * scene)
 			// use models where a vertex can have multiple texture coordinates so we always take the first set (0).
 			vec.x = mesh->mTextureCoords[0][i].x;
 			vec.y = mesh->mTextureCoords[0][i].y;
-			vertex.texture_uv_ = vec;
+			vertex.uv = vec;
 		}
 		else
-			vertex.texture_uv_ = glm::vec2(0.0f, 0.0f);
+			vertex.uv = glm::vec2(0.0f, 0.0f);
 		// tangent
 		vector.x = mesh->mTangents[i].x;
 		vector.y = mesh->mTangents[i].y;
 		vector.z = mesh->mTangents[i].z;
-		vertex.tangent_ = vector;
+		vertex.tangent = vector;
 		// bitangent
 		vector.x = mesh->mBitangents[i].x;
 		vector.y = mesh->mBitangents[i].y;
 		vector.z = mesh->mBitangents[i].z;
-		vertex.bitangent_ = vector;
+		vertex.bitangent = vector;
 		vertices.push_back(vertex);
 	}
 	// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
@@ -146,7 +147,7 @@ std::vector<Texture> Model::LoadMaterial(aiMaterial * mat, aiTextureType type, s
 		bool skip = false;
 		for (unsigned int j = 0; j < loaded_textures_.size(); j++)
 		{
-			if (strcmp(loaded_textures_[j].path_.data(), str.C_Str()) == 0)
+			if (strcmp(loaded_textures_[j].path.data(), str.C_Str()) == 0)
 			{
 				textures.push_back(loaded_textures_[j]);
 				skip = true;

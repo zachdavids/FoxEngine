@@ -13,6 +13,7 @@
 class Mesh
 {
 public:
+
 	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures = std::vector<Texture>());
 	Mesh(std::vector<Vertex> vertices, std::vector<Texture> textures);
 	Mesh(std::vector<Vertex> vertices);
@@ -20,8 +21,12 @@ public:
 	int GetSize();
 	int GetVerticesCount();
 	std::vector<Texture>& GetTextures();
+
 private:
-	GLuint VAO_, EBO_, VBO_;
+
+	unsigned int VAO_;
+	unsigned int EBO_;
+	unsigned int VBO_;
 	std::vector<Vertex> vertices_;
 	std::vector<unsigned int> indices_;
 	std::vector<Texture> textures_;

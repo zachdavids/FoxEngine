@@ -18,7 +18,7 @@ void SkyboxRenderer::InitializeModel(Mesh* mesh)
 	for (int i = 0; i < mesh->GetTextures().size(); i++)
 	{
 		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, mesh->GetTextures()[i].id_);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, mesh->GetTextures()[i].id);
 	}
 
 	glActiveTexture(GL_TEXTURE0);

@@ -3,6 +3,7 @@
 #include "Model.h"
 #include "Entity.h"
 #include "StaticShader.h"
+#include "Tools.h"
 
 EntityRenderer::EntityRenderer(StaticShader* shader, glm::mat4 const& projection) : 
 	m_Shader(shader), 
@@ -35,14 +36,14 @@ void EntityRenderer::InitializeModel(Mesh* mesh)
 {
 	for (unsigned int i = 0; i < mesh->GetTextures().size(); i++)
 	{
-		if (mesh->GetTextures()[i].GetTransparent() == true)
+		if (mesh->GetTextures()[i].bTransparent == true)
 		{
 			DisableCulling();
 		}
 
-		m_Shader->LoadFakeLighting(mesh->GetTextures()[i].GetFakeLighting());
+		m_Shader->LoadFakeLighting(mesh->GetTextures()[i].bFakeLighting);
 		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_2D, mesh->GetTextures()[i].id_);
+		glBindTexture(GL_TEXTURE_2D, mesh->GetTextures()[i].id);
 	}
 
 	glActiveTexture(GL_TEXTURE0);

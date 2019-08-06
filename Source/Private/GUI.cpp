@@ -9,7 +9,7 @@ GUI::GUI(glm::vec3 const& position, glm::vec3 const& scale, unsigned int texture
 	m_Scale(scale)
 {
 	CreateGUI();
-	m_Texture.id_ = texture;
+	m_Texture.id = texture;
 }
 
 void GUI::CreateGUI()
@@ -20,9 +20,9 @@ void GUI::CreateGUI()
 	for (int i = 0; i < sizeof(vertices_array) / sizeof(float); i += 2)
 	{
 		Vertex vertex;
-		vertex.position_.x = vertices_array[i];
-		vertex.position_.y = vertices_array[i + 1];
-		vertex.position_.z = 0;
+		vertex.position.x = vertices_array[i];
+		vertex.position.y = vertices_array[i + 1];
+		vertex.position.z = 0;
 		vertices.push_back(vertex);
 	}
 	

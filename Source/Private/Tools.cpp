@@ -1,6 +1,17 @@
 #include "Tools.h"
+#include "Config.h"
 
-void Tools::ReadFile(std::string path, std::string* output)
+#define GLM_FORCE_RADIANS
+#include <glm/gtc/matrix_transform.hpp>
+#define GLEW_STATIC
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <stb_image.h>
+
+#include <sstream>
+#include <fstream>
+
+void Tools::ReadFile(std::string const& path, std::string* output)
 {
 	std::ifstream stream;
 	std::stringstream sstr;
@@ -9,21 +20,20 @@ void Tools::ReadFile(std::string path, std::string* output)
 	sstr << stream.rdbuf();
 	stream.close();
 	*output = sstr.str();
-	sstr.str("");
-	sstr.clear();
 }
 
 void Tools::Tokenize(std::string* input, char delimiter, std::vector<std::string>* substrings)
 {
 	std::stringstream stream(*input);
 	std::string substring;
+
 	while (std::getline(stream, substring, delimiter))
 	{
 		substrings->push_back(substring);
 	}
 }
 
-glm::mat4 Tools::GenerateTransformMatrix(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
+glm::mat4 Tools::GenerateTransformMatrix(glm::vec3 const& position, glm::vec3 const& rotation, glm::vec3 const& scale)
 {
 	glm::mat4 transform = glm::mat4(1.0f);
 	transform = glm::translate(transform, position);
@@ -39,7 +49,7 @@ glm::mat4 Tools::GenerateProjectionMatrix()
 	return glm::perspective(glm::radians(FOV), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, NEAR_PLANE, FAR_PLANE);
 }
 
-Texture Tools::LoadTexture(std::string path, std::string type)
+Texture Tools::LoadTexture(std::string const& path, std::string const& type)
 {
 	unsigned int textureID;
 	glGenTextures(1, &textureID);
@@ -68,13 +78,13 @@ Texture Tools::LoadTexture(std::string path, std::string type)
 	stbi_image_free(data);
 
 	Texture texture;
-	texture.id_ = textureID;
-	texture.type_ = type;
-	texture.path_ = path;
+	texture.id = textureID;
+	texture.type = type;
+	texture.path = path;
 	return texture;
 }
 
-Texture Tools::LoadCubeTexture(std::vector<std::string> paths, std::string type)
+Texture Tools::LoadCubeTexture(std::vector<std::string> const& paths, std::string const& type)
 {
 	unsigned int texture_id;
 	glGenTextures(1, &texture_id);
@@ -104,14 +114,14 @@ Texture Tools::LoadCubeTexture(std::vector<std::string> paths, std::string type)
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 	Texture texture;
-	texture.id_ = texture_id;
-	texture.type_ = type;
-	texture.path_ = "";
+	texture.id = texture_id;
+	texture.type = type;
+	texture.path = "";
 	return texture;
 }
 
 //From Christer Ericson's Real-Time Collision Detection
-float Tools::CalculateBaryCentric(glm::vec2 input, glm::vec3 p1, glm::vec3 p2, glm::vec3 p3)
+float Tools::CalculateBaryCentric(glm::vec2 const& input, glm::vec3 const& p1, glm::vec3 const& p2, glm::vec3 const& p3)
 {
 	float det = (p2.z - p3.z) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.z - p3.z);
 	float d11 = ((p2.z - p3.z) * (input.x - p3.x) + (p3.x - p2.x) * (input.y - p3.z)) / det;

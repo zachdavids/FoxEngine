@@ -1,10 +1,18 @@
 #include "Water.h"
+#include "Model.h"
+#include "Vertex.h"
+#include "Tools.h"
 
-const float Water::TILE_SIZE = 100.0f;
+#include <vector>
 
-Water::Water(float x, float z, float height) : x_(x), z_(z), height_(height)
+const float Water::s_TileSize = 100.0f;
+
+Water::Water(float x, float z, float height) : 
+	m_X(x), 
+	m_Z(z), 
+	m_Height(height)
 {
-	model_ = CreateWater();
+	m_Model = CreateWater();
 }
 
 Model* Water::CreateWater()
@@ -15,19 +23,12 @@ Model* Water::CreateWater()
 	 for (int i = 0; i < sizeof(vertices_array) / sizeof(float); i += 2)
 	 {
 		 Vertex vertex;
-		 glm::vec3 vector;
-		 glm::vec2 uv = glm::vec2(1.0f);
-		 vector.x = vertices_array[i];
-		 vector.y = 0.0f;
-		 vector.z = vertices_array[i + 1];
-		 vertex.position_ = vector;
-		 vector = glm::vec3(1.0f);
-		 vertex.texture_uv_ = uv;
-		 vertex.normal_ = vector;
-		 vertex.tangent_ = vector;
-		 vertex.bitangent_ = vector;
+		 vertex.position.x = vertices_array[i];
+		 vertex.position.y = 0.0f;
+		 vertex.position.z = vertices_array[i + 1];
 		 vertices.push_back(vertex);
 	 }
+
 	 std::vector<Texture> textures;
 	 Texture dudv = Tools::LoadTexture("Resources/Textures/dudv.png");
 	 textures.push_back(dudv);
@@ -35,22 +36,22 @@ Model* Water::CreateWater()
 	 return new Model(new Mesh(vertices, textures));
 }
 
-float Water::GetX()
+float Water::GetX() const
 {
-	return x_;
+	return m_X;
 }
 
-float Water::GetZ()
+float Water::GetZ() const
 {
-	return z_;
+	return m_Z;
 }
 
-float Water::GetHeight()
+float Water::GetHeight() const
 {
-	return height_;
+	return m_Height;
 }
 
-Model * Water::GetModel()
+Model * Water::GetModel() const
 {
-	return model_;
+	return m_Model;
 }

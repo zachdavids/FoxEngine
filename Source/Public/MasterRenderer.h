@@ -1,45 +1,59 @@
 #pragma once
 
-#include "Config.h"
-#include "StaticShader.h"
-#include "EntityRenderer.h"
-#include "TerrainRenderer.h"
-#include "SkyboxRenderer.h"
-#include "WaterRenderer.h"
-#include "GUIRenderer.h"
-#include "Camera.h"
+#include <GLM/mat4x4.hpp>
+
+#include <map>
+#include <vector>
+
+class Entity;
+class Model;
+class Light;
+class Camera;
+class Terrain;
+class Skybox;
+class Water;
+class Framebuffer;
+class StaticShader;
+class TerrainShader;
+class SkyboxShader;
+class WaterShader;
+class EntityRenderer;
+class TerrainRenderer;
+class SkyboxRenderer;
+class WaterRenderer;
+class GUIRenderer;
 
 class MasterRenderer
 {
 public:
+
 	MasterRenderer();
-	void Initialize();
-	void Render(std::vector<Light*> lights, Camera* camera, glm::vec4 plane);
-	void RenderWater(Camera * camera);
+	void Initialize() const;
+	void Render(std::vector<Light*> const& lights, Camera* camera, glm::vec4 const& plane) const;
+	void RenderWater(Camera* camera) const;
 	void ProcessEntity(Entity* entity);
 	void ProcessTerrain(Terrain* terrain);
-	void ProcessSkybox(Skybox * skybox);
+	void ProcessSkybox(Skybox* skybox);
 	void ProcessWater(Water* water);
-	void EnableCulling();
-	void DisableCulling();
-	void LoadFramebuffer(Framebuffer* buffer);
+	void EnableCulling() const;
+	void DisableCulling() const;
+	void LoadFramebuffer(Framebuffer* framebuffer);
+
 private:
-	glm::mat4 projection_;
 
-	StaticShader* static_shader_;
-	TerrainShader* terrain_shader_;
-	SkyboxShader* skybox_shader_;
-	WaterShader* water_shader_;
-
-	EntityRenderer* entity_renderer_;
-	TerrainRenderer* terrain_renderer_;
-	SkyboxRenderer* skybox_renderer_;
-	WaterRenderer* water_renderer_;
-	GUIRenderer* gui_renderer_;
-	Framebuffer* buffer_;
-
-	Skybox* skybox_;
-	std::map<Model*, std::vector<Entity*>> entities_;
-	std::vector<Terrain*> terrain_;
-	std::vector<Water*> water_;
+	StaticShader* m_StaticShader;
+	TerrainShader* m_TerrainShader;
+	SkyboxShader* m_SkyboxShader;
+	WaterShader* m_WaterShader;
+	EntityRenderer* m_EntityRenderer;
+	TerrainRenderer* m_TerrainRenderer;
+	SkyboxRenderer* m_SkyboxRenderer;
+	WaterRenderer* m_WaterRenderer;
+	GUIRenderer* m_GUIRenderer;
+	Framebuffer* m_Framebuffer;
+	Skybox* m_Skybox;
+	glm::mat4 m_Projection;
+	std::map<Model*, std::vector<Entity*>> m_Entities;
+	std::vector<Terrain*> m_Terrain;
+	std::vector<Water*> m_Water;
 };

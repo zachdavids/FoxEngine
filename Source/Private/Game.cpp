@@ -77,7 +77,7 @@ void Game::Init()
 	skybox_ = new Skybox();
 	master_renderer_->ProcessSkybox(skybox_);
 
-	Light* sun = new Light(glm::vec3(0, 10000.0f, -7000.0f), glm::vec3(0.4f, 0.4f, 0.4f));
+	Light* sun = new Light(glm::vec3(0, 10000.0f, -7000.0f), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(1.0f, 0, 0));
 	lights_.push_back(sun);
 	Light* light1 = new Light(glm::vec3(250.0f, 10.0f, 250.0f), glm::vec3(10.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.01f, 0.002));
 	Light* light2 = new Light(glm::vec3(200.0f, 10.0f, 200.0f), glm::vec3(0.0f, 10.0f, 0.0f), glm::vec3(1.0f, 0.01f, 0.002));

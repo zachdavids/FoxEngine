@@ -18,8 +18,8 @@ private:
 	static const int SIZE;
 	static const float MAX_HEIGHT;
 	static const float MAX_PIXEL_COLOUR;
-	float CalculateHeight(int x, int z, int width, int height, stbi_uc* image_data);
-	glm::vec3 CalculateNormal(int x, int z, int width, int height, stbi_uc* image_data);
+	float CalculateHeight(int x, int z, int width, int height, unsigned char* image_data);
+	glm::vec3 CalculateNormal(int x, int z, int width, int height, unsigned char* image_data);
 	std::vector<std::vector<float>> heights_;
 	Model* model_;
 	Model* GenerateTerrain(std::string path);

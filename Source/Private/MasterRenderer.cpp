@@ -1,71 +1,82 @@
 #include "MasterRenderer.h"
+#include "Config.h"
 #include "Entity.h"
+#include "Model.h"
+#include "Camera.h"
+#include "StaticShader.h"
+#include "TerrainShader.h"
+#include "SkyboxShader.h"
+#include "WaterShader.h"
+#include "EntityRenderer.h"
+#include "TerrainRenderer.h"
+#include "SkyboxRenderer.h"
+#include "WaterRenderer.h"
 
 MasterRenderer::MasterRenderer()
 {
-	static_shader_ = new StaticShader();
-	terrain_shader_ = new TerrainShader();
-	skybox_shader_ = new SkyboxShader();
-	water_shader_ = new WaterShader();
-	projection_ = Tools::GenerateProjectionMatrix();
-	entity_renderer_ = new EntityRenderer(static_shader_, projection_);
-	terrain_renderer_ = new TerrainRenderer(terrain_shader_, projection_);
-	skybox_renderer_ = new SkyboxRenderer(skybox_shader_, projection_);
+	m_StaticShader = new StaticShader();
+	m_TerrainShader = new TerrainShader();
+	m_SkyboxShader = new SkyboxShader();
+	m_WaterShader = new WaterShader();
+	m_Projection = Tools::GenerateProjectionMatrix();
+	m_EntityRenderer = new EntityRenderer(m_StaticShader, m_Projection);
+	m_TerrainRenderer = new TerrainRenderer(m_TerrainShader, m_Projection);
+	m_SkyboxRenderer = new SkyboxRenderer(m_SkyboxShader, m_Projection);
 
 	EnableCulling();
 }
 
-void MasterRenderer::Initialize()
+void MasterRenderer::Initialize() const
 {
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(RED, GREEN, BLUE, 1.0f);
 }
 
-void MasterRenderer::Render(std::vector<Light*> lights, Camera * camera, glm::vec4 plane)
+void MasterRenderer::Render(std::vector<Light*> const& lights, Camera* camera, glm::vec4 const& plane) const
 {
 	Initialize();
 
 	//Skybox
-	skybox_shader_->Start();
-	skybox_shader_->LoadFogColor(glm::vec3(RED, GREEN, BLUE));
-	skybox_shader_->LoadViewMatrix(skybox_, glm::mat4(glm::mat3(camera->GenerateViewMatrix())));
-	skybox_renderer_->Render(skybox_);
+	m_SkyboxShader->Start();
+	m_SkyboxShader->LoadFogColor(glm::vec3(RED, GREEN, BLUE));
+	m_SkyboxShader->LoadViewMatrix(m_Skybox, glm::mat4(glm::mat3(camera->GenerateViewMatrix())));
+	m_SkyboxRenderer->Render(m_Skybox);
 	
 	//Entities
-	static_shader_->Start();
-	static_shader_->LoadPlane(plane);
-	static_shader_->LoadSkyColour(glm::vec3(RED, GREEN, BLUE));
-	static_shader_->LoadLight(lights);
-	static_shader_->LoadViewMatrix(camera->GenerateViewMatrix());
-	entity_renderer_->Render(entities_);
+	m_StaticShader->Start();
+	m_StaticShader->LoadPlane(plane);
+	m_StaticShader->LoadSkyColour(glm::vec3(RED, GREEN, BLUE));
+	m_StaticShader->LoadLight(lights);
+	m_StaticShader->LoadViewMatrix(camera->GenerateViewMatrix());
+	m_EntityRenderer->Render(m_Entities);
 
 	//Terrain
-	terrain_shader_->Start();
-	terrain_shader_->LoadPlane(plane);
-	terrain_shader_->LoadSkyColour(glm::vec3(RED, GREEN, BLUE));
-	terrain_shader_->LoadLight(lights);
-	terrain_shader_->LoadViewMatrix(camera->GenerateViewMatrix());
-	terrain_renderer_->Render(terrain_);
+	m_TerrainShader->Start();
+	m_TerrainShader->LoadPlane(plane);
+	m_TerrainShader->LoadSkyColour(glm::vec3(RED, GREEN, BLUE));
+	m_TerrainShader->LoadLight(lights);
+	m_TerrainShader->LoadViewMatrix(camera->GenerateViewMatrix());
+	m_TerrainRenderer->Render(m_Terrain);
 }
 
-void MasterRenderer::RenderWater(Camera* camera)
+void MasterRenderer::RenderWater(Camera* camera) const
 {
 	//Water
-	water_shader_->Start();
-	water_shader_->LoadViewMatrix(camera->GenerateViewMatrix());
-	water_renderer_->Render(water_);
+	m_WaterShader->Start();
+	m_WaterShader->LoadViewMatrix(camera->GenerateViewMatrix());
+	m_WaterRenderer->Render(m_Water);
 }
 
 void MasterRenderer::ProcessEntity(Entity* entity)
 {
 	Model* model = entity->GetModel();
-	auto search = entities_.find(model);
-	if (search == entities_.end())
+	auto search = m_Entities.find(model);
+	if (search == m_Entities.end())
 	{
 		std::vector<Entity*> entities;
 		entities.push_back(entity);
-		entities_.emplace(model, entities);
+		m_Entities.emplace(model, entities);
 	}
 	else
 	{
@@ -75,32 +86,32 @@ void MasterRenderer::ProcessEntity(Entity* entity)
 
 void MasterRenderer::ProcessTerrain(Terrain* terrain)
 {
-	terrain_.push_back(terrain);
+	m_Terrain.push_back(terrain);
 }
 
 void MasterRenderer::ProcessSkybox(Skybox* skybox)
 {
-	skybox_ = skybox;
+	m_Skybox = skybox;
 }
 
 void MasterRenderer::ProcessWater(Water* water)
 {
-	water_.push_back(water);
+	m_Water.push_back(water);
 }
 
-void MasterRenderer::EnableCulling()
+void MasterRenderer::EnableCulling() const
 {
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 }
 
-void MasterRenderer::DisableCulling()
+void MasterRenderer::DisableCulling() const
 {
 	glDisable(GL_CULL_FACE);
 }
 
-void MasterRenderer::LoadFramebuffer(Framebuffer* buffer)
+void MasterRenderer::LoadFramebuffer(Framebuffer* framebuffer)
 {
-	buffer_ = buffer;
-	water_renderer_ = new WaterRenderer(water_shader_, buffer_, projection_);
+	m_Framebuffer = framebuffer;
+	m_WaterRenderer = new WaterRenderer(m_WaterShader, m_Framebuffer, m_Projection);
 }

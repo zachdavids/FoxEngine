@@ -20,7 +20,7 @@ void GUIRenderer::Render(std::vector<GUI*> const& gui) const
 	for (GUI* gui_element : gui)
 	{	
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, gui_element->GetTexture().id_);
+		glBindTexture(GL_TEXTURE_2D, gui_element->GetTexture().id);
 		LoadModelMatrix(gui_element);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, model->GetMeshes()[0].GetVerticesCount());
 	}

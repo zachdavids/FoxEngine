@@ -5,7 +5,7 @@
 class GUIShader : public Shader
 {
 public:
+
 	GUIShader();
-	void LoadTransformationMatrix(glm::mat4 transform_matrix);
-private:
+	void LoadTransformationMatrix(glm::mat4 const& transform_matrix) const;
 };

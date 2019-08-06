@@ -1,21 +1,23 @@
 #include "Light.h"
 
-Light::Light(glm::vec3 position, glm::vec3 colour, glm::vec3 attenuation) : position_(position), colour_(colour), attenuation_(attenuation)
+Light::Light(glm::vec3 const& position, glm::vec3 const& colour, glm::vec3 const& attenuation) :
+	m_Position(position), 
+	m_Color(colour), 
+	m_Attenuation(attenuation)
 {
-	
 }
 
-glm::vec3 Light::GetPosition()
+glm::vec3 Light::GetPosition() const
 {
-	return position_;
+	return m_Position;
 }
 
-glm::vec3 Light::GetColour()
+glm::vec3 Light::GetColour() const
 {
-	return colour_;
+	return m_Color;
 }
 
-glm::vec3 Light::GetAttenuation()
+glm::vec3 Light::GetAttenuation() const
 {
-	return attenuation_;
+	return m_Attenuation;
 }

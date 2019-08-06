@@ -5,9 +5,9 @@
 class Vertex
 {
 public:
-	glm::vec3 position_;
-	glm::vec3 normal_;
-	glm::vec2 texture_uv_;
-	glm::vec3 tangent_;
-	glm::vec3 bitangent_;
+	glm::vec3 position;
+	glm::vec3 normal;
+	glm::vec2 uv;
+	glm::vec3 tangent;
+	glm::vec3 bitangent;
 };

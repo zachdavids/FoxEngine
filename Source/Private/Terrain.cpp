@@ -1,4 +1,7 @@
 #include "Terrain.h"
+#include "Tools.h"
+
+#include <stb_image.h>
 
 const int Terrain::SIZE = 800;
 const float Terrain::MAX_HEIGHT = 40.0f;
@@ -96,14 +99,14 @@ Model* Terrain::GenerateTerrain(std::string path)
 			vertex_height = CalculateHeight(j, i, width, height, image_data);
 			vector.y = vertex_height;
 			vector.z = static_cast<float>(i) / (static_cast<float>(vertex_count_) - 1) * SIZE;
-			vertex.position_ = vector;
-			vertex.normal_ = CalculateNormal(j, i, width, height, image_data);
-			vertex.tangent_ = vector;
-			vertex.bitangent_ = vector;
+			vertex.position = vector;
+			vertex.normal = CalculateNormal(j, i, width, height, image_data);
+			vertex.tangent = vector;
+			vertex.bitangent = vector;
 			glm::vec2 uv;
 			uv.x = static_cast<float>(j) / (static_cast<float>(vertex_count_) - 1);
 			uv.y = static_cast<float>(i) / (static_cast<float>(vertex_count_) - 1);
-			vertex.texture_uv_ = uv;
+			vertex.uv = uv;
 			vertices.push_back(vertex);
 			heights_[j].push_back(vertex_height);
 		}
