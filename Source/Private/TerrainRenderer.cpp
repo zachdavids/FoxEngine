@@ -41,7 +41,7 @@ void TerrainRenderer::InitializeModel(Mesh* mesh)
 void TerrainRenderer::LoadModelMatrix(Terrain* terrain)
 {
 	//TODO: MOVE GENERATE TRANSFORM TO ENTITY
-	glm::mat4 transform_ = Tools::GenerateTransformMatrix(glm::vec3(terrain->GetX(), 0.0f, terrain->GetZ()), 0, 0, 0, glm::vec3(1.0f, 1.0f, 1.0f));
+	glm::mat4 transform_ = Tools::GenerateTransformMatrix(glm::vec3(terrain->GetX(), 0.0f, terrain->GetZ()), glm::vec3(0), glm::vec3(1.0f, 1.0f, 1.0f));
 	shader_->LoadTransformationMatrix(transform_);
 }
 

@@ -1,16 +1,20 @@
 #include "GUIRenderer.h"
+#include "GUI.h"
+#include "Mesh.h"
+#include "Model.h"
+#include "GUIShader.h"
 
-GUIRenderer::GUIRenderer(GUIShader* shader) : shader_(shader)
+GUIRenderer::GUIRenderer(GUIShader* shader) : 
+	m_Shader(shader)
 {
-	shader_->Start();
-	shader_->Stop();
 }
 
-void GUIRenderer::Render(std::vector<GUI*> gui)
+void GUIRenderer::Render(std::vector<GUI*> const& gui) const
 {
-	shader_->Start();
+	m_Shader->Start();
 	Model* model = gui[0]->GetModel();
 	InitializeModel(&model->GetMeshes()[0]);
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	for (GUI* gui_element : gui)
@@ -22,20 +26,20 @@ void GUIRenderer::Render(std::vector<GUI*> gui)
 	}
 	glDisable(GL_BLEND);
 	UnbindModel();
-	shader_->Stop();
+	m_Shader->Stop();
 }
 
-void GUIRenderer::InitializeModel(Mesh* mesh)
+void GUIRenderer::InitializeModel(Mesh* mesh) const
 {
 	glBindVertexArray(mesh->GetVAO());
 }
 
-void GUIRenderer::UnbindModel()
+void GUIRenderer::UnbindModel() const
 {
 	glBindVertexArray(0);
 }
 
-void GUIRenderer::LoadModelMatrix(GUI* gui)
+void GUIRenderer::LoadModelMatrix(GUI* gui) const
 {
-	shader_->LoadTransformationMatrix(Tools::GenerateTransformMatrix(gui->GetPosition(), 0, 0, 0, gui->GetScale()));
+	m_Shader->LoadTransformationMatrix(Tools::GenerateTransformMatrix(gui->GetPosition(), glm::vec3(0), gui->GetScale()));
 }

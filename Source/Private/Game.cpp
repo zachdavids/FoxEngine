@@ -1,4 +1,6 @@
 #include "Game.h"
+#include "GUI.h"
+#include "GUIShader.h"
 
 Game::Game()
 {
@@ -104,10 +106,10 @@ void Game::Render()
 	framebuffer_->BindReflectionFBO();
 	float distance = 2.0f * (camera_->GetPosition().y - (-5.0f));
 	camera_->Translate(glm::vec3(0.0f, -distance, 0.0f));
-	camera_->SetPitch(-camera_->GetPitch());
+	camera_->SetPitch(-camera_->GetRotation().x);
 	master_renderer_->Render(lights_, camera_, glm::vec4(0.0f, 1.0f, 0.0f, -(-5.0f)));
 	camera_->Translate(glm::vec3(0.0f, distance, 0.0f));
-	camera_->SetPitch(-camera_->GetPitch());
+	camera_->SetPitch(-camera_->GetRotation().x);
 	framebuffer_->UnbindFBO();
 
 	//FBO Refraction
@@ -151,7 +153,7 @@ void Game::ProcessInput(GLFWwindow * window, double delta_time)
 	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
 		player_->KeyboardInput(Player::DOWN, delta_time, terrain_);
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-		camera_->SetFirstPerson();
+		camera_->ToggleCameraMode();
 	camera_->Move();
 }
 

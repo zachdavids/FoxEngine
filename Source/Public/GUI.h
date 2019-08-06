@@ -1,25 +1,29 @@
 #pragma once
 
-#define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
-#include <glm/gtc/constants.hpp>
-#include <glm/gtx/transform.hpp>
+#include "Texture.h"
 
-#include "Model.h"
+#include <GLM/vec3.hpp>
+
+class Model;
 
 class GUI
 {
 public:
-	GUI(glm::vec3 position, glm::vec3 scale);
-	GUI(glm::vec3 position, glm::vec3 scale, unsigned int texture);
-	Model* CreateGUI();
-	glm::vec3 GetPosition();
-	glm::vec3 GetScale();
-	Model* GetModel();
-	Texture GetTexture();
+
+	GUI(glm::vec3 const& position, glm::vec3 const& scale, unsigned int texture);
+	void CreateGUI();
+
+public:
+
+	glm::vec3 GetPosition() const;
+	glm::vec3 GetScale() const;
+	Model* GetModel() const;
+	Texture GetTexture() const;
+
 private:
-	glm::vec3 position_;
-	glm::vec3 scale_;
-	Model* model_;
-	Texture texture_;
+
+	glm::vec3 m_Position;
+	glm::vec3 m_Scale;
+	Model* m_Model;
+	Texture m_Texture;
 };

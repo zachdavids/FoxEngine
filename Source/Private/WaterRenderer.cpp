@@ -45,5 +45,5 @@ void WaterRenderer::UnbindModel()
 void WaterRenderer::LoadModelMatrix(Water* water)
 {
 	shader_->LoadTransformationMatrix(Tools::GenerateTransformMatrix(glm::vec3(water->GetX(), water->GetHeight(), water->GetZ()),
-		0, 0, 0, glm::vec3(Water::TILE_SIZE, Water::TILE_SIZE, Water::TILE_SIZE)));
+		glm::vec3(0), glm::vec3(Water::TILE_SIZE, Water::TILE_SIZE, Water::TILE_SIZE)));
 }

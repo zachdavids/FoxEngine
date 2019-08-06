@@ -1,26 +1,28 @@
 #pragma once
 
-#define GLEW_STATIC
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <vector>
 #include <map>
+#include <vector>
+#include <GLM/mat4x4.hpp>
 
-#include "Entity.h"
-#include "StaticShader.h"
-#include "Config.h"
+class Mesh;
+class Model;
+class Entity;
+class StaticShader;
 
 class EntityRenderer
 {
 public:
-	EntityRenderer(StaticShader* shader, glm::mat4 projection);
+
+	EntityRenderer(StaticShader* shader, glm::mat4 const& projection);
 	void InitializeModel(Mesh* mesh);
 	void LoadModelMatrix(Entity* entity);
-	void UnbindModel();
-	void EnableCulling();
-	void DisableCulling();
-	void Render(std::map<Model*, std::vector<Entity*>> entities);
+	void UnbindModel() const;
+	void EnableCulling() const;
+	void DisableCulling() const;
+	void Render(std::map<Model*, std::vector<Entity*>> const& entities);
+
 private:
-	glm::mat4 projection_;
-	StaticShader* shader_;
+
+	StaticShader* m_Shader;
+	glm::mat4 m_Projection;
 };

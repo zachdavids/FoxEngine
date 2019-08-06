@@ -1,107 +1,85 @@
 #include "Camera.h"
+#include "Player.h"
 
-Camera::Camera(Player* player, glm::vec3 position) : player_(player), position_(position)
+Camera::Camera(Player* player, glm::vec3 const& position) : 
+	m_Player(player), 
+	m_Position(position)
 {
-	roll_ = 0.0f;
-	pitch_ = 20.0f;
-	yaw_ = 180.0f;
-	distance_ = 5.0f;
-	first_person_ = false;
 }
 
-float Camera::GetRoll()
+void Camera::Translate(glm::vec3 const& translation)
 {
-	return roll_;
+	m_Position += translation;
 }
 
-float Camera::GetPitch()
+void Camera::Rotate(glm::vec3 const& rotation)
 {
-	return pitch_;
-}
-
-float Camera::GetYaw()
-{
-	return yaw_;
-}
-
-bool Camera::GetCameraMode()
-{
-	return first_person_;
-}
-
-glm::vec3 Camera::GetPosition()
-{
-	return position_;
-}
-
-void Camera::SetPitch(float pitch)
-{
-	pitch_ = pitch;
-}
-
-void Camera::Translate(glm::vec3 translation)
-{
-	position_ += translation;
-}
-
-void Camera::Rotate(float pitch, float yaw, float roll)
-{
-	roll_ += roll;
-	pitch_ += pitch;
-	yaw_ += yaw;
+	m_Rotation += rotation;
 }
 
 void Camera::Move()
 {
-	if (first_person_ == false)
+	const glm::vec3 player_position = m_Player->GetPosition();
+	const glm::vec3 player_rotation = m_Player->GetRotation();
+
+	if (m_bFirstPerson == false)
 	{
-		float horizontal_distance = CalculateHorizontalDistance();
-		float verticle_distance = CalculateVerticleDistance();
-		CalculatePosition(horizontal_distance, verticle_distance);
-		yaw_ = 180 - player_->GetYaw();
+		const float h_distance = CalculateHorizontalDistance();
+		m_Position.x = player_position.x - h_distance * glm::sin(glm::radians(player_rotation.y));
+		m_Position.y = player_position.y + CalculateVerticleDistance();
+		m_Position.z = player_position.z - h_distance * glm::cos(glm::radians(player_rotation.y));
 	}
 	else
 	{
-		roll_ = player_->GetRoll();
-		yaw_ = 180 - player_->GetYaw();
-		pitch_ = player_->GetPitch();
-		position_ = player_->GetPosition();
+		m_Rotation.x = player_rotation.x;
+		m_Rotation.z = player_rotation.z;
+		m_Position = player_position;
 	}
+
+	m_Rotation.y = 180 - player_rotation.y;
 }
 
-glm::mat4 Camera::GenerateViewMatrix()
+glm::mat4 Camera::GenerateViewMatrix() const
 {
 	glm::mat4 view = glm::mat4(1.0f);
-	view = glm::rotate(view, glm::radians(pitch_), glm::vec3(1.0f, 0.0f, 0.0f));
-	view = glm::rotate(view, glm::radians(yaw_), glm::vec3(0.0f, 1.0f, 0.0f));
-	view = glm::rotate(view, glm::radians(roll_), glm::vec3(0.0f, 0.0f, 1.0f));
-	view = glm::translate(view, -position_);
+	view = glm::rotate(view, glm::radians(m_Rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+	view = glm::rotate(view, glm::radians(m_Rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+	view = glm::rotate(view, glm::radians(m_Rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+	view = glm::translate(view, -m_Position);
 	return view;
 }
 
-float Camera::CalculateHorizontalDistance()
+float Camera::CalculateHorizontalDistance() const
 {
-	return distance_ * glm::cos(glm::radians(pitch_));
+	return m_Distance * glm::cos(glm::radians(m_Rotation.x));
 }
 
-float Camera::CalculateVerticleDistance()
+float Camera::CalculateVerticleDistance() const
 {
-	return distance_ * glm::sin(glm::radians(pitch_));
+	return m_Distance * glm::sin(glm::radians(m_Rotation.x));
 }
 
-void Camera::CalculatePosition(float horizontal_distance, float verticle_distance)
+void Camera::ToggleCameraMode()
 {
-	float x_offset = horizontal_distance * glm::sin(glm::radians(player_->GetYaw()));
-	float z_offset = horizontal_distance * glm::cos(glm::radians(player_->GetYaw()));
-	position_.x = player_->GetPosition().x - x_offset;
-	position_.y = player_->GetPosition().y + verticle_distance;
-	position_.z = player_->GetPosition().z - z_offset;
+	m_bFirstPerson = !m_bFirstPerson;
 }
 
-void Camera::SetFirstPerson()
+glm::vec3 Camera::GetPosition() const
 {
-	if (first_person_ == true)
-		first_person_ = false;
-	else
-		first_person_ = true;
+	return m_Position;
+}
+
+glm::vec3 Camera::GetRotation() const
+{
+	return m_Rotation;
+}
+
+void Camera::SetRotation(glm::vec3 const& rotation)
+{
+	m_Rotation = rotation;
+}
+
+void Camera::SetPitch(float pitch)
+{
+	m_Rotation.x = pitch;
 }

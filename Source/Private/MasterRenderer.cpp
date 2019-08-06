@@ -1,4 +1,5 @@
 #include "MasterRenderer.h"
+#include "Entity.h"
 
 MasterRenderer::MasterRenderer()
 {

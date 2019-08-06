@@ -3,7 +3,8 @@
 const float Player::RUN_SPEED = 10.0f;
 const float Player::TURN_SPEED = 1.0f;
 
-Player::Player(Model* model, glm::vec3 position, float roll, float pitch, float yaw, glm::vec3 scale) : Entity(model, position, roll, pitch, yaw, scale)
+Player::Player(Model* model, glm::vec3 position, float roll, float pitch, float yaw, glm::vec3 scale) : 
+	Entity(model, position, glm::vec3(roll, pitch, yaw), scale)
 {
 }
 
@@ -14,9 +15,9 @@ void Player::KeyboardInput(Player_Movement direction, double delta_time, Terrain
 	if (direction == BACKWARD)
 		Translate(-GetForward() * (float)delta_time * RUN_SPEED);
 	if (direction == LEFT)
-		Rotate(0.0f, 1.0f, 0.0f);
+		Rotate(glm::vec3(0.0f, 1.0f, 0.0f));
 	if (direction == RIGHT)
-		Rotate(0.0f, -1.0f, 0.0f);
+		Rotate(glm::vec3(0.0f, -1.0f, 0.0f));
 	if (direction == UP)
 		Translate(glm::vec3(0.0f, 0.1f * (float)delta_time * RUN_SPEED, 0.0f));
 	if (direction == DOWN)

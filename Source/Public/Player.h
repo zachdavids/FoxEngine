@@ -20,7 +20,7 @@ public:
 	void KeyboardInput(Player_Movement direction, double delta_time, Terrain* terrain);
 	void MouseInput(float x_offset, float y_offset, double delta_time);
 private:
-	float hp_;
+	float m_HP;
 	static const float RUN_SPEED;
 	static const float TURN_SPEED;
 };

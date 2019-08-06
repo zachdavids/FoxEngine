@@ -23,13 +23,13 @@ void Tools::Tokenize(std::string* input, char delimiter, std::vector<std::string
 	}
 }
 
-glm::mat4 Tools::GenerateTransformMatrix(glm::vec3 position, float pitch, float yaw, float roll, glm::vec3 scale)
+glm::mat4 Tools::GenerateTransformMatrix(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
 {
 	glm::mat4 transform = glm::mat4(1.0f);
 	transform = glm::translate(transform, position);
-	transform = glm::rotate(transform, glm::radians(pitch), glm::vec3(1.0f, 0.0f, 0.0f));
-	transform = glm::rotate(transform, glm::radians(yaw), glm::vec3(0.0f, 1.0f, 0.0f));
-	transform = glm::rotate(transform, glm::radians(roll), glm::vec3(0.0f, 0.0f, 1.0f));
+	transform = glm::rotate(transform, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+	transform = glm::rotate(transform, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+	transform = glm::rotate(transform, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
 	transform = glm::scale(transform, scale);
 	return transform;
 }
@@ -63,6 +63,7 @@ Texture Tools::LoadTexture(std::string path, std::string type)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.4f);
 
 	stbi_image_free(data);
 

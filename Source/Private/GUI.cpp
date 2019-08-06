@@ -1,57 +1,50 @@
 #include "GUI.h"
+#include "Model.h"
+#include "Vertex.h"
 
-GUI::GUI(glm::vec3 position, glm::vec3 scale) : position_(position), scale_(scale)
+#include <vector>
+
+GUI::GUI(glm::vec3 const& position, glm::vec3 const& scale, unsigned int texture) :
+	m_Position(position),
+	m_Scale(scale)
 {
-	model_ = CreateGUI();
+	CreateGUI();
+	m_Texture.id_ = texture;
 }
 
-GUI::GUI(glm::vec3 position, glm::vec3 scale, unsigned int texture) : position_(position), scale_(scale)
-{
-	model_ = CreateGUI();
-	texture_.id_ = texture;
-}
-
-Model* GUI::CreateGUI()
+void GUI::CreateGUI()
 {
 	float vertices_array[] = { -1, 1, -1, -1, 1, 1, 1, -1 };
+
 	std::vector<Vertex> vertices;
 	for (int i = 0; i < sizeof(vertices_array) / sizeof(float); i += 2)
 	{
 		Vertex vertex;
-		glm::vec3 vector;
-		glm::vec2 uv = glm::vec2(1.0f);
-		vector.x = vertices_array[i];
-		vector.y = vertices_array[i + 1];
-		vector.z = 0;
-		vertex.position_ = vector;
-		vector = glm::vec3(1.0f);
-		vertex.texture_uv_ = uv;
-		vertex.normal_ = vector;
-		vertex.tangent_ = vector;
-		vertex.bitangent_ = vector;
+		vertex.position_.x = vertices_array[i];
+		vertex.position_.y = vertices_array[i + 1];
+		vertex.position_.z = 0;
 		vertices.push_back(vertex);
 	}
 	
-	texture_ = Tools::LoadTexture("Resources/Textures/grass.png");
-	return new Model(new Mesh(vertices));
+	m_Model = new Model(new Mesh(vertices));
 }
 
-glm::vec3 GUI::GetPosition()
+glm::vec3 GUI::GetPosition() const
 {
-	return position_;
+	return m_Position;
 }
 
-glm::vec3 GUI::GetScale()
+glm::vec3 GUI::GetScale() const
 {
-	return scale_;
+	return m_Scale;
 }
 
-Model * GUI::GetModel()
+Model * GUI::GetModel() const
 {
-	return model_;
+	return m_Model;
 }
 
-Texture GUI::GetTexture()
+Texture GUI::GetTexture() const
 {
-	return texture_;
+	return m_Texture;
 }

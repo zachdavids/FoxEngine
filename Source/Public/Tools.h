@@ -24,7 +24,7 @@ class Tools
 public:
 	static void ReadFile(std::string path, std::string* );
 	static void Tokenize(std::string* input, char delimiter, std::vector<std::string>* substrings);
-	static glm::mat4 GenerateTransformMatrix(glm::vec3 position, float pitch, float yaw, float roll, glm::vec3 scale);
+	static glm::mat4 GenerateTransformMatrix(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale);
 	static glm::mat4 GenerateProjectionMatrix();
 	static Texture LoadTexture(std::string path, std::string type = "misc");
 	static Texture LoadCubeTexture(std::vector<std::string> paths, std::string type = "misc");
