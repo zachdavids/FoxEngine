@@ -64,7 +64,7 @@ void Game::Init()
 	InitEventHandlers();
 
 	Model* arwing = new Model("Resources/Models/Arwing/Arwing.obj");
-	player_ = new Player(arwing, glm::vec3(200.0f, 20.0f, 200.0f), 0, 0, 0, glm::vec3(0.5f, 0.5f, 0.5f));
+	player_ = new Player(arwing, glm::vec3(200.0f, 20.0f, 200.0f), glm::vec3(0), glm::vec3(0.5f, 0.5f, 0.5f));
 	entities_.push_back(player_);
 	for (Entity* entity : entities_)
 	{
@@ -141,17 +141,17 @@ void Game::ProcessInput(GLFWwindow * window, double delta_time)
 		glfwSetWindowShouldClose(window, true);
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		player_->KeyboardInput(Player::FORWARD, delta_time, terrain_);
+		player_->KeyboardInput(Player::PlayerMovement::Forward, delta_time);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		player_->KeyboardInput(Player::BACKWARD, delta_time, terrain_);
+		player_->KeyboardInput(Player::PlayerMovement::Backward, delta_time);
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		player_->KeyboardInput(Player::LEFT, delta_time, terrain_);
+		player_->KeyboardInput(Player::PlayerMovement::Left, delta_time);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		player_->KeyboardInput(Player::RIGHT, delta_time, terrain_);
+		player_->KeyboardInput(Player::PlayerMovement::Right, delta_time);
 	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-		player_->KeyboardInput(Player::UP, delta_time, terrain_);
+		player_->KeyboardInput(Player::PlayerMovement::Up, delta_time);
 	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
-		player_->KeyboardInput(Player::DOWN, delta_time, terrain_);
+		player_->KeyboardInput(Player::PlayerMovement::Down, delta_time);
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 		camera_->ToggleCameraMode();
 	camera_->Move();

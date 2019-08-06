@@ -1,26 +1,27 @@
 #pragma once
 
 #include "Entity.h"
-#include "Terrain.h"
 
 class Player : public Entity
 {
 public:
-	enum Player_Movement
+
+	enum class PlayerMovement
 	{
-		FORWARD,
-		BACKWARD,
-		LEFT,
-		RIGHT,
-		UP,
-		DOWN
+		Forward,
+		Backward,
+		Left,
+		Right,
+		Up,
+		Down
 	};
 
-	Player(Model* model, glm::vec3 position, float roll, float pitch, float yaw, glm::vec3 scale);
-	void KeyboardInput(Player_Movement direction, double delta_time, Terrain* terrain);
+	Player(Model* model, glm::vec3 const& position, glm::vec3 const& rotation, glm::vec3 const& scale);
+	void KeyboardInput(PlayerMovement direction, double delta_time);
 	void MouseInput(float x_offset, float y_offset, double delta_time);
 private:
+
 	float m_HP;
-	static const float RUN_SPEED;
-	static const float TURN_SPEED;
+	static const float s_RunSpeed;
+	static const float s_TurnSpeed;
 };

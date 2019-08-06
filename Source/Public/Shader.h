@@ -1,38 +1,32 @@
 #pragma once
 
-#define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
-#include <glm/gtc/constants.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#define GLEW_STATIC
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
-#include "Tools.h"
+#include <GLM/vec3.hpp>
+#include <GLM/mat4x4.hpp>
 
 #include <string>
-#include <vector>
 
 class Shader
 {
 public:
-	Shader();
-	~Shader();
-	Shader(std::string vertex_path, std::string fragment_path);
-	void Start();
-	void Stop();
-	void BindAttribute(int index, std::string name);
-	void SetBool(std::string name, bool value) const;
-	void SetInt(std::string name, int value) const;
-	void SetFloat(std::string name, float value) const;
-	void SetVector(std::string name, glm::vec3 value) const;
-	void SetVec4(std::string name, glm::vec4 value) const;
-	void SetMat4(std::string name, glm::mat4 value) const;
+
+	Shader(std::string const& vertex_path, std::string const& fragment_path);
+	void Start() const;
+	void Stop() const;
+	void SetBool(std::string const& name, bool value) const;
+	void SetInt(std::string const& name, int value) const;
+	void SetFloat(std::string const& name, float value) const;
+	void SetVector(std::string const& name, glm::vec3 const& value) const;
+	void SetVec4(std::string const& name, glm::vec4 const& value) const;
+	void SetMat4(std::string const& name, glm::mat4 const& value) const;
 
 private:
-	int program_id_;
-	int vertex_id_;
-	int fragment_id_;
-	GLuint LoadShader(std::string path, GLuint type);
-	GLuint CreateProgram(GLuint vertex_shader, GLuint fragment_shader);
+
+	unsigned int LoadShader(std::string const& path, unsigned int type) const;
+	unsigned int CreateProgram(unsigned int vertex_shader, unsigned int fragment_shader) const;
+
+private:
+
+	int m_ProgramID;
+	int m_VertexID;
+	int m_FragmentID;
 };

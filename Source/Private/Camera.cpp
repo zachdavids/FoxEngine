@@ -1,6 +1,10 @@
 #include "Camera.h"
 #include "Player.h"
 
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <GLM/gtc/matrix_transform.hpp>
+
 Camera::Camera(Player* player, glm::vec3 const& position) : 
 	m_Player(player), 
 	m_Position(position)

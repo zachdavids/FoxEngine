@@ -1,17 +1,21 @@
 #include "TerrainRenderer.h"
+#include "TerrainShader.h"
+#include "Model.h"
+#include "Terrain.h"
 #include "Tools.h"
 
-TerrainRenderer::TerrainRenderer(TerrainShader* shader, glm::mat4 projection) : shader_(shader), projection_(projection)
+TerrainRenderer::TerrainRenderer(TerrainShader* shader, glm::mat4 const& projection) :
+	m_Shader(shader), 
+	m_Projection(projection)
 {
-	shader_->Start();
-	shader_->LoadProjectionMatrix(projection_);
-	shader_->LoadTextures();
-	shader_->Stop();
+	m_Shader->Start();
+	m_Shader->LoadProjectionMatrix(m_Projection);
+	m_Shader->LoadTextures();
+	m_Shader->Stop();
 }
 
-void TerrainRenderer::Render(std::vector<Terrain*> terrains)
+void TerrainRenderer::Render(std::vector<Terrain*> const& terrains) const
 {
-
 	for (Terrain* terrain : terrains)
 	{
 		LoadModelMatrix(terrain);
@@ -25,28 +29,26 @@ void TerrainRenderer::Render(std::vector<Terrain*> terrains)
 	}
 }
 
-void TerrainRenderer::InitializeModel(Mesh* mesh)
+void TerrainRenderer::InitializeModel(Mesh* mesh) const
 {
 	for (unsigned int i = 0; i < mesh->GetTextures().size(); i++)
 	{
 		glActiveTexture(GL_TEXTURE0 + i);
 		glBindTexture(GL_TEXTURE_2D, mesh->GetTextures()[i].id);
-		glGenerateMipmap(GL_TEXTURE_2D);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	}
+
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(mesh->GetVAO());
 }
 
-void TerrainRenderer::LoadModelMatrix(Terrain* terrain)
+void TerrainRenderer::LoadModelMatrix(Terrain* terrain) const
 {
 	//TODO: MOVE GENERATE TRANSFORM TO ENTITY
 	glm::mat4 transform_ = Tools::GenerateTransformMatrix(glm::vec3(terrain->GetX(), 0.0f, terrain->GetZ()), glm::vec3(0), glm::vec3(1.0f, 1.0f, 1.0f));
-	shader_->LoadTransformationMatrix(transform_);
+	m_Shader->LoadTransformationMatrix(transform_);
 }
 
-void TerrainRenderer::UnbindModel()
+void TerrainRenderer::UnbindModel() const
 {
 	glBindVertexArray(0);
 }

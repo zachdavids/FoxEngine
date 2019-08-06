@@ -1,18 +1,25 @@
 #pragma once
 
-#include "Tools.h"
-#include "Terrain.h"
-#include "TerrainShader.h"
+#include <GLM/mat4x4.hpp>
+
+#include <vector>
+
+class Mesh;
+class Terrain;
+class TerrainShader;
 
 class TerrainRenderer
 {
 public:
-	TerrainRenderer(TerrainShader* shader, glm::mat4 projection);
-	void Render(std::vector<Terrain*> terrain);
-	void InitializeModel(Mesh * mesh);
-	void LoadModelMatrix(Terrain* entity);
-	void UnbindModel();
+
+	TerrainRenderer(TerrainShader* shader, glm::mat4 const& projection);
+	void Render(std::vector<Terrain*> const& terrain) const;
+	void InitializeModel(Mesh* mesh) const;
+	void LoadModelMatrix(Terrain* entity) const;
+	void UnbindModel() const;
+
 private:
-	glm::mat4 projection_;
-	TerrainShader* shader_;
+
+	TerrainShader* m_Shader;
+	glm::mat4 m_Projection;
 };

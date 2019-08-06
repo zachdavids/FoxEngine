@@ -1,64 +1,63 @@
 #include "Shader.h"
 #include "Tools.h"
 
+#define GLEW_STATIC
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <glm/gtc/type_ptr.hpp>
+
+#include <string>
+#include <vector>
 #include <iostream>
 
-Shader::Shader()
+Shader::Shader(std::string const& vertex_path, std::string const& fragment_path)
 {
+	m_VertexID = LoadShader(vertex_path, GL_VERTEX_SHADER);
+	m_FragmentID = LoadShader(fragment_path, GL_FRAGMENT_SHADER);
+	m_ProgramID = CreateProgram(m_VertexID, m_FragmentID);
 }
 
-Shader::~Shader()
+void Shader::Start() const
 {
+	glUseProgram(m_ProgramID);
 }
 
-Shader::Shader(std::string vertex_path, std::string fragment_path)
-{
-	vertex_id_ = LoadShader(vertex_path, GL_VERTEX_SHADER);
-	fragment_id_ = LoadShader(fragment_path, GL_FRAGMENT_SHADER);
-	program_id_ = CreateProgram(vertex_id_, fragment_id_);
-}
-
-void Shader::Start()
-{
-	glUseProgram(program_id_);
-}
-
-void Shader::Stop()
+void Shader::Stop() const
 {
 	glUseProgram(0);
 }
 
-void Shader::SetBool(std::string name, bool value) const
+void Shader::SetBool(std::string const& name, bool value) const
 {
-	glUniform1i(glGetUniformLocation(program_id_, name.c_str()), (int)value);
+	glUniform1i(glGetUniformLocation(m_ProgramID, name.c_str()), (int)value);
 }
 
-void Shader::SetInt(std::string name, int value) const
+void Shader::SetInt(std::string const& name, int value) const
 {
-	glUniform1i(glGetUniformLocation(program_id_, name.c_str()), value);
+	glUniform1i(glGetUniformLocation(m_ProgramID, name.c_str()), value);
 }
 
-void Shader::SetFloat(std::string name, float value) const
+void Shader::SetFloat(std::string const& name, float value) const
 {
-	glUniform1f(glGetUniformLocation(program_id_, name.c_str()), value);
+	glUniform1f(glGetUniformLocation(m_ProgramID, name.c_str()), value);
 }
 
-void Shader::SetVector(std::string name, glm::vec3 value) const
+void Shader::SetVector(std::string const& name, glm::vec3 const& value) const
 {
-	glUniform3fv(glGetUniformLocation(program_id_, name.c_str()), 1, glm::value_ptr(value));
+	glUniform3fv(glGetUniformLocation(m_ProgramID, name.c_str()), 1, glm::value_ptr(value));
 }
 
-void Shader::SetVec4(std::string name, glm::vec4 value) const
+void Shader::SetVec4(std::string const& name, glm::vec4 const& value) const
 {
-	glUniform4fv(glGetUniformLocation(program_id_, name.c_str()), 1, glm::value_ptr(value));
+	glUniform4fv(glGetUniformLocation(m_ProgramID, name.c_str()), 1, glm::value_ptr(value));
 }
 
-void Shader::SetMat4(std::string name, glm::mat4 value) const
+void Shader::SetMat4(std::string const& name, glm::mat4 const& value) const
 {
-	glUniformMatrix4fv(glGetUniformLocation(program_id_, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+	glUniformMatrix4fv(glGetUniformLocation(m_ProgramID, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 }
 
-GLuint Shader::LoadShader(std::string path, GLuint type)
+unsigned int Shader::LoadShader(std::string const& path, unsigned int type) const
 {
 	// Read shader text file
 	std::string code;
@@ -90,9 +89,9 @@ GLuint Shader::LoadShader(std::string path, GLuint type)
 	return shader_id;
 }
 
-GLuint Shader::CreateProgram(GLuint vertex_shader, GLuint fragment_shader)
+unsigned int Shader::CreateProgram(unsigned int vertex_shader, unsigned int fragment_shader) const
 {
-	GLuint program_id = glCreateProgram();
+	unsigned int program_id = glCreateProgram();
 	glAttachShader(program_id, vertex_shader);
 	glAttachShader(program_id, fragment_shader);
 	glLinkProgram(program_id);
@@ -114,9 +113,3 @@ GLuint Shader::CreateProgram(GLuint vertex_shader, GLuint fragment_shader)
 	}
 	return program_id;
 }
-
-void Shader::BindAttribute(int index, std::string name)
-{
-	glBindAttribLocation(program_id_, index, name.c_str());
-}
-

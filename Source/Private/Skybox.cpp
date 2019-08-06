@@ -1,54 +1,55 @@
 #include "Skybox.h"
 #include "Tools.h"
+#include "Model.h"
+#include "Vertex.h"
 
-const float Skybox::SIZE = 500.0f;
-const float Skybox::ROTATE_SPEED = 0.005f;
+const float Skybox::s_Size = 500.0f;
+const float Skybox::s_RotateSpeed = 0.001f;
 
 Skybox::Skybox()
 {
-	model_ = CreateSkybox();
-	rotation_ = 0.0f;
+	m_Model = CreateSkybox();
 }
 
-Model* Skybox::CreateSkybox()
+Model* Skybox::CreateSkybox() const
 {
 	float vertices_array[] = {
-		-SIZE,-SIZE,-SIZE, // triangle 1 : begin
-		-SIZE,-SIZE, SIZE,
-		-SIZE, SIZE, SIZE, // triangle 1 : end
-		SIZE, SIZE,-SIZE, // triangle 2 : begin
-		-SIZE,-SIZE,-SIZE,
-		-SIZE, SIZE,-SIZE, // triangle 2 : end
-		SIZE,-SIZE, SIZE,
-		-SIZE,-SIZE,-SIZE,
-		SIZE,-SIZE,-SIZE,
-		SIZE, SIZE,-SIZE,
-		SIZE,-SIZE,-SIZE,
-		-SIZE,-SIZE,-SIZE,
-		-SIZE,-SIZE,-SIZE,
-		-SIZE, SIZE, SIZE,
-		-SIZE, SIZE,-SIZE,
-		SIZE,-SIZE, SIZE,
-		-SIZE,-SIZE, SIZE,
-		-SIZE,-SIZE,-SIZE,
-		-SIZE, SIZE, SIZE,
-		-SIZE,-SIZE, SIZE,
-		SIZE,-SIZE, SIZE,
-		SIZE, SIZE, SIZE,
-		SIZE,-SIZE,-SIZE,
-		SIZE, SIZE,-SIZE,
-		SIZE,-SIZE,-SIZE,
-		SIZE, SIZE, SIZE,
-		SIZE,-SIZE, SIZE,
-		SIZE, SIZE, SIZE,
-		SIZE, SIZE,-SIZE,
-		-SIZE, SIZE,-SIZE,
-		SIZE, SIZE, SIZE,
-		-SIZE, SIZE,-SIZE,
-		-SIZE, SIZE, SIZE,
-		SIZE, SIZE, SIZE,
-		-SIZE, SIZE, SIZE,
-		SIZE,-SIZE, SIZE
+		-s_Size,-s_Size,-s_Size, // triangle 1 : begin
+		-s_Size,-s_Size, s_Size,
+		-s_Size, s_Size, s_Size, // triangle 1 : end
+		s_Size, s_Size,-s_Size, // triangle 2 : begin
+		-s_Size,-s_Size,-s_Size,
+		-s_Size, s_Size,-s_Size, // triangle 2 : end
+		s_Size,-s_Size, s_Size,
+		-s_Size,-s_Size,-s_Size,
+		s_Size,-s_Size,-s_Size,
+		s_Size, s_Size,-s_Size,
+		s_Size,-s_Size,-s_Size,
+		-s_Size,-s_Size,-s_Size,
+		-s_Size,-s_Size,-s_Size,
+		-s_Size, s_Size, s_Size,
+		-s_Size, s_Size,-s_Size,
+		s_Size,-s_Size, s_Size,
+		-s_Size,-s_Size, s_Size,
+		-s_Size,-s_Size,-s_Size,
+		-s_Size, s_Size, s_Size,
+		-s_Size,-s_Size, s_Size,
+		s_Size,-s_Size, s_Size,
+		s_Size, s_Size, s_Size,
+		s_Size,-s_Size,-s_Size,
+		s_Size, s_Size,-s_Size,
+		s_Size,-s_Size,-s_Size,
+		s_Size, s_Size, s_Size,
+		s_Size,-s_Size, s_Size,
+		s_Size, s_Size, s_Size,
+		s_Size, s_Size,-s_Size,
+		-s_Size, s_Size,-s_Size,
+		s_Size, s_Size, s_Size,
+		-s_Size, s_Size,-s_Size,
+		-s_Size, s_Size, s_Size,
+		s_Size, s_Size, s_Size,
+		-s_Size, s_Size, s_Size,
+		s_Size,-s_Size, s_Size
 	};
 
 
@@ -56,17 +57,9 @@ Model* Skybox::CreateSkybox()
 	for (int i = 0; i < sizeof(vertices_array) / sizeof(float); i += 3) 
 	{
 		Vertex vertex;
-		glm::vec3 vector;
-		glm::vec2 uv = glm::vec2(1.0f);
-		vector.x = -vertices_array[i];
-		vector.y = -vertices_array[i + 1];
-		vector.z = -vertices_array[i + 2];
-		vertex.position = vector;
-		vector = glm::vec3(1.0f);
-		vertex.uv = uv;
-		vertex.normal = vector;
-		vertex.tangent = vector;
-		vertex.bitangent = vector;
+		vertex.position.x = -vertices_array[i];
+		vertex.position.y = -vertices_array[i + 1];
+		vertex.position.z = -vertices_array[i + 2];
 		vertices.push_back(vertex);
 	}
 
@@ -107,19 +100,19 @@ Model* Skybox::CreateSkybox()
 	return new Model(new Mesh(vertices, textures));
 }
 
-Model* Skybox::GetModel()
-{
-	return model_;
-}
-
-float Skybox::GetRotation()
-{
-	return rotation_;
-}
-
 void Skybox::Rotate()
 {
-	rotation_ += ROTATE_SPEED;
+	m_Rotation += s_RotateSpeed;
 }
 
+
+Model* Skybox::GetModel() const
+{
+	return m_Model;
+}
+
+float Skybox::GetRotation() const
+{
+	return m_Rotation;
+}
 

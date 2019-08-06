@@ -1,19 +1,22 @@
 #include "SkyboxRenderer.h"
+#include "SkyboxShader.h"
+#include "Mesh.h"
+#include "Skybox.h"
+#include "Model.h"
 
-SkyboxRenderer::SkyboxRenderer(SkyboxShader* shader, glm::mat4 projection) : shader_(shader), projection_(projection)
+SkyboxRenderer::SkyboxRenderer(SkyboxShader* shader, glm::mat4 const& projection) :
+	m_Shader(shader), m_Projection(projection)
 {
-	blend_factor_ = 0.5f;
-	time_ = 0.0f;
-	shader_->Start();
-	shader_->LoadProjectionMatrix(projection_);
-	shader_->LoadTextures();
-	shader_->LoadBlendFactor(blend_factor_);
-	shader_->Stop();
+	m_Shader->Start();
+	m_Shader->LoadProjectionMatrix(m_Projection);
+	m_Shader->LoadTextures();
+	m_Shader->LoadBlendFactor(m_BlendFactor);
+	m_Shader->Stop();
 }
 
-void SkyboxRenderer::InitializeModel(Mesh* mesh)
+void SkyboxRenderer::InitializeModel(Mesh* mesh) const
 {
-	shader_->LoadBlendFactor(blend_factor_);
+	m_Shader->LoadBlendFactor(m_BlendFactor);
 
 	for (int i = 0; i < mesh->GetTextures().size(); i++)
 	{
@@ -25,12 +28,12 @@ void SkyboxRenderer::InitializeModel(Mesh* mesh)
 	glBindVertexArray(mesh->GetVAO());
 }
 
-void SkyboxRenderer::UnbindModel()
+void SkyboxRenderer::UnbindModel() const
 {
 	glBindVertexArray(0);
 }
 
-void SkyboxRenderer::Render(Skybox* skybox)
+void SkyboxRenderer::Render(Skybox* skybox) const
 {
 	Model* model = skybox->GetModel();
 	InitializeModel(&model->GetMeshes()[0]);

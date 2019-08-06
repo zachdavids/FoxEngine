@@ -1,18 +1,24 @@
 #pragma once
 
-#include "Model.h"
+class Model;
 
 class Skybox
 {
 public:
+
 	Skybox();
-	Model* CreateSkybox();
-	Model* GetModel();
-	float GetRotation();
 	void Rotate();
+	Model* CreateSkybox() const;
+
+public:
+
+	float GetRotation() const;
+	Model* GetModel() const;
+
 private:
-	Model* model_;
-	const static float SIZE;
-	const static float ROTATE_SPEED;
-	float rotation_;
+
+	float m_Rotation = 0.f;;
+	const static float s_Size;
+	const static float s_RotateSpeed;
+	Model* m_Model;
 };
