@@ -2,6 +2,10 @@
 #include "GUI.h"
 #include "GUIShader.h"
 
+#define GLEW_STATIC
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 Game::Game()
 {
 	window_manager_ = new WindowManager();

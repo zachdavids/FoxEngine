@@ -4,6 +4,10 @@
 #include "Terrain.h"
 #include "Tools.h"
 
+#define GLEW_STATIC
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 TerrainRenderer::TerrainRenderer(TerrainShader* shader, glm::mat4 const& projection) :
 	m_Shader(shader), 
 	m_Projection(projection)

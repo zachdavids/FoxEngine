@@ -1,38 +1,52 @@
 #include "Mesh.h"
 
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures) : vertices_(vertices), indices_(indices), textures_(textures)
+#define GLEW_STATIC
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#define GLM_FORCE_RADIANS
+#include <glm/common.hpp>
+
+#include <vector>
+
+Mesh::Mesh(std::vector<Vertex> const& vertices, std::vector<unsigned int> const& indices, std::vector<Texture> const& textures) : 
+	m_Vertices(vertices),
+	m_Indices(indices),
+	m_Textures(textures)
 {
 	SetupMesh();
 }
 
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<Texture> textures) : vertices_(vertices), textures_(textures)
+Mesh::Mesh(std::vector<Vertex> const& vertices, std::vector<Texture> const& textures) : 
+	m_Vertices(vertices),
+	m_Textures(textures)
 {
 	SetupNonEBOMesh();
 }
 
-Mesh::Mesh(std::vector<Vertex> vertices) : vertices_(vertices)
+Mesh::Mesh(std::vector<Vertex> const& vertices) : 
+	m_Vertices(vertices)
 {
 	SetupNonEBOMesh();
 }
 
-GLuint Mesh::GetVAO()
+unsigned int Mesh::GetVAO() const
 {
-	return VAO_;
+	return m_VAO;
 }
 
-int Mesh::GetSize()
+int Mesh::GetSize() const
 {
-	return indices_.size();
+	return m_Indices.size();
 }
 
-int Mesh::GetVerticesCount()
+int Mesh::GetVerticesCount() const
 {
-	return vertices_.size();
+	return m_Vertices.size();
 }
 
 std::vector<Texture>& Mesh::GetTextures()
 {
-	return textures_;
+	return m_Textures;
 }
 
 void Mesh::SetupMesh()
@@ -54,44 +68,43 @@ void Mesh::SetupNonEBOMesh()
 
 void Mesh::CreateVAO()
 {
-	glGenVertexArrays(1, &VAO_);
-	glBindVertexArray(VAO_);
+	glGenVertexArrays(1, &m_VAO);
+	glBindVertexArray(m_VAO);
 }
 
 void Mesh::CreateEBO()
 {
-	glGenBuffers(1, &EBO_);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices_.size() * sizeof(unsigned int), &indices_[0], GL_STATIC_DRAW);
+	glGenBuffers(1, &m_EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_Indices.size() * sizeof(unsigned int), &m_Indices[0], GL_STATIC_DRAW);
 }
 
 void Mesh::CreateVBO()
 {
-	glGenBuffers(1, &VBO_);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO_);
-	glBufferData(GL_ARRAY_BUFFER, vertices_.size() * sizeof(Vertex), &vertices_[0], GL_STATIC_DRAW);
+	glGenBuffers(1, &m_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	glBufferData(GL_ARRAY_BUFFER, m_Vertices.size() * sizeof(Vertex), &m_Vertices[0], GL_STATIC_DRAW);
 }
 
-void Mesh::EnableAttributes()
+void Mesh::EnableAttributes() const
 {
-	//Positions
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-	//Normals
+
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
-	//Texture Coords
+
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
-	//Tangent
+
 	glEnableVertexAttribArray(3);
 	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tangent));
-	//Bitangent
+
 	glEnableVertexAttribArray(4);
 	glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, bitangent));
 }
 
-void Mesh::UnbindVAO()
+void Mesh::UnbindVAO() const
 {
 	glBindVertexArray(0);
 }

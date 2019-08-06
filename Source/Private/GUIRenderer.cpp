@@ -2,7 +2,12 @@
 #include "GUI.h"
 #include "Mesh.h"
 #include "Model.h"
+#include "Tools.h"
 #include "GUIShader.h"
+
+#define GLEW_STATIC
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 GUIRenderer::GUIRenderer(GUIShader* shader) : 
 	m_Shader(shader)

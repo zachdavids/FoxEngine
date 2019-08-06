@@ -5,6 +5,10 @@
 #include "StaticShader.h"
 #include "Tools.h"
 
+#define GLEW_STATIC
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 EntityRenderer::EntityRenderer(StaticShader* shader, glm::mat4 const& projection) : 
 	m_Shader(shader), 
 	m_Projection(projection)

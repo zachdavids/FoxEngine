@@ -1,41 +1,41 @@
 #pragma once
 
-#define GLEW_STATIC
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#define GLM_FORCE_RADIANS
-#include <glm/common.hpp>
-#include <vector>
-
 #include "Vertex.h"
 #include "Texture.h"
+
+#include <vector>
 
 class Mesh
 {
 public:
 
-	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures = std::vector<Texture>());
-	Mesh(std::vector<Vertex> vertices, std::vector<Texture> textures);
-	Mesh(std::vector<Vertex> vertices);
-	GLuint GetVAO();
-	int GetSize();
-	int GetVerticesCount();
+	Mesh(std::vector<Vertex> const& vertices);
+	Mesh(std::vector<Vertex> const& vertices, std::vector<Texture> const& textures);
+	Mesh(std::vector<Vertex> const& vertices, std::vector<unsigned int> const& indices, std::vector<Texture> const& textures = std::vector<Texture>());
+
+public:
+
+	unsigned int GetVAO() const;
+	int GetSize() const;
+	int GetVerticesCount() const;
 	std::vector<Texture>& GetTextures();
 
 private:
-
-	unsigned int VAO_;
-	unsigned int EBO_;
-	unsigned int VBO_;
-	std::vector<Vertex> vertices_;
-	std::vector<unsigned int> indices_;
-	std::vector<Texture> textures_;
 
 	void SetupMesh();
 	void SetupNonEBOMesh();
 	void CreateVAO();
 	void CreateEBO();
 	void CreateVBO();
-	void EnableAttributes();
-	void UnbindVAO();
+	void EnableAttributes() const;
+	void UnbindVAO() const;
+
+private:
+
+	unsigned int m_VAO;
+	unsigned int m_EBO;
+	unsigned int m_VBO;
+	std::vector<Vertex> m_Vertices;
+	std::vector<unsigned int> m_Indices;
+	std::vector<Texture> m_Textures;
 };

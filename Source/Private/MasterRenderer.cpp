@@ -1,4 +1,5 @@
 #include "MasterRenderer.h"
+#include "Tools.h"
 #include "Config.h"
 #include "Entity.h"
 #include "Model.h"
@@ -11,6 +12,10 @@
 #include "TerrainRenderer.h"
 #include "SkyboxRenderer.h"
 #include "WaterRenderer.h"
+
+#define GLEW_STATIC
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 MasterRenderer::MasterRenderer()
 {

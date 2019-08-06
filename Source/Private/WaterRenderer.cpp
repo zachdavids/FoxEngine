@@ -6,6 +6,10 @@
 #include "Framebuffer.h"
 #include "Tools.h"
 
+#define GLEW_STATIC
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 const float WaterRenderer::s_WaveSpeed = 0.00001;
 
 WaterRenderer::WaterRenderer(WaterShader* shader, Framebuffer* buffer, glm::mat4 const& projection) : 
